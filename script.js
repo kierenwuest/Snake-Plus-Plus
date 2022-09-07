@@ -1,7 +1,7 @@
 // Snake++ by Kieren Wuest - Version 0.20
 // Started from https://youtu.be/7Azlj0f9vas?t=1227
 // Features and changes from above added as Snake ++
-
+// Test Git
 //------- Main Canvas ------//
 const canvas = document.getElementById("snakeGame");
 const context = canvas.getContext("2d");
