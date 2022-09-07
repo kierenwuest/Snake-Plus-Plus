@@ -1,10 +1,11 @@
+// Snake++ by Kieren Wuest - Version 0.20
 // Started from https://youtu.be/7Azlj0f9vas?t=1227
-// Features and changes from above added by Kieren Wuest as Snake ++
+// Features and changes from above added as Snake ++
 
-//------- Main Canvas
+//------- Main Canvas ------//
 const canvas = document.getElementById("snakeGame");
 const context = canvas.getContext("2d");
-//------ Take arrow keys away from the browser scrolling.
+//------ Take arrow keys away from the browser scrolling. ------//
 window.addEventListener(
   "keydown",
   function (e) {
@@ -18,23 +19,43 @@ window.addEventListener(
   },
   false
 );
-//----------- Audio initialise
-const contextAudio = new window.AudioContext();
-//let looped = false;
 
-//------ Snake tail part class
+//----------- Audio Code ------//
+const contextAudio = new window.AudioContext();
+function playFile(filepath, looped) {
+  // see https://jakearchibald.com/2016/sounds-fun/
+  // Fetch the file
+  fetch(filepath)
+    // Read it into memory as an arrayBuffer
+    .then((response) => response.arrayBuffer())
+    // Turn it from mp3/aac/whatever into raw audio data
+    .then((arrayBuffer) => contextAudio.decodeAudioData(arrayBuffer))
+    .then((audioBuffer) => {
+      // Now we're ready to play!
+      const soundSource = contextAudio.createBufferSource();
+      soundSource.buffer = audioBuffer;
+      soundSource.connect(contextAudio.destination);
+      // if (looped = false) {soundSource.loop = false; } else {soundSource.loop = true;}; Not sure how to do this yet
+      soundSource.start();
+    });
+}
+
+//------ Classes ------//
+
 class snakePart {
+  // Snake Tail
   constructor(x, y) {
     this.x = x;
     this.y = y;
   }
 }
 
-//-------- Variables
+//-------- Game Variables ------//
 
 const W = (canvas.width = 1000);
 const H = (canvas.height = 500);
 
+let gameStateValue = "Start";
 let tileCount = 100;
 let tileSize = 10;
 let headX = W / 2;
@@ -46,9 +67,6 @@ let speed = 1; // level 1 - 10
 let xVelocity = 0;
 let yVelocity = 0;
 
-//let randXCoord = Math.round(Math.floor(Math.random() * W) / 10) * 10;
-//let randYCoord = Math.round(Math.floor(Math.random() * H) / 10) * 10;
-// Dont use randXCoord as initialising variables. Created a bug
 let appleX = Math.round(Math.floor(Math.random() * W) / 10) * 10;
 let appleY = Math.round(Math.floor(Math.random() * H) / 10) * 10;
 
@@ -75,14 +93,48 @@ const wildColours = [
 ];
 let index = 0;
 let alpha = 1;
-
-//const alphaFadeOut = [1,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0];
-
 let scorePop = 0;
+const snakeBG = new Image();
 
-//----- Game Functions
+//----- Game States ------//
+
+function gameState(state) {
+  drawInfo();
+  gameStateValue = state;
+  if (gameStateValue === "Start") {
+    drawStartGame();
+    //drawGame();
+  }
+
+  if (gameStateValue === "Play") {
+    drawGame();
+  }
+}
+
+//----- Start Game Functions ------//
+
+function drawStartGame() {
+  clearScreen();
+  //playFile("https://cdn.freesound.org/previews/583/583100_9927444-lq.mp3");
+  snakeBG.onload = function () {
+    context.drawImage(snakeBG, W / 2 + 30, H / 2 - 150, 300, 300);
+  };
+  snakeBG.src = "https://raw.githubusercontent.com/kierenwuest/Snake-plus-plus/main/SnakeBG3.png";
+
+  context.fillStyle = "white";
+  context.textAlign = "center";
+  context.font = "bold 50px Quantico";
+  context.fillText("SNAKE ++", W / 2 - 140, H / 2);
+  context.font = "15px Quantico";
+  context.fillText("Press [Insert] to insert coin", W / 2 - 150, H / 1.7);
+  context.font = "10px Quantico";
+  context.fillText("Version 0.2", W / 2 - 150, H / 1.01);
+}
+
+//----- Play Game Functions ------//
 
 function drawGame() {
+  contextAudio.resume();
   changeSnakePosition();
   let result = isGameOver();
   if (result) {
@@ -103,24 +155,6 @@ function drawGame() {
   drawSnake();
   scorePopper();
   setTimeout(drawGame, 100 / speed); // segement of time for each move increment eg 100 = 1/10th of a sec
-}
-
-function playFile(filepath, looped) {
-  // see https://jakearchibald.com/2016/sounds-fun/
-  // Fetch the file
-  fetch(filepath)
-    // Read it into memory as an arrayBuffer
-    .then((response) => response.arrayBuffer())
-    // Turn it from mp3/aac/whatever into raw audio data
-    .then((arrayBuffer) => contextAudio.decodeAudioData(arrayBuffer))
-    .then((audioBuffer) => {
-      // Now we're ready to play!
-      const soundSource = contextAudio.createBufferSource();
-      soundSource.buffer = audioBuffer;
-      soundSource.connect(contextAudio.destination);
-      // if (looped = false) {soundSource.loop = false; } else {soundSource.loop = true;}; Not sure how to do this yet
-      soundSource.start();
-    });
 }
 
 function isGameOver() {
@@ -153,7 +187,11 @@ function isGameOver() {
     context.font = "bold 50px Quantico";
     context.fillText("GAME OVER", W / 2, H / 2);
     context.font = "15px Quantico";
-    context.fillText("Press [Enter] to insert coin", W / 2, H / 1.7);
+    context.fillText("Press [Insert] to insert coin", W / 2, H / 1.7);
+    setTimeout(function () {
+      gameState("Start");
+    }, 1000 * 10);
+    //setTimeout(gameState("Start"), 20000);
     //playFile('https://cdn.freesound.org/previews/583/583100_9927444-lq.mp3', true);
     //playFile('https://cdn.freesound.org/previews/583/583100_9927444-lq.mp3');
   }
@@ -567,27 +605,43 @@ function keyDown(event) {
     yVelocity = 0;
     xVelocity = 0;
   }
-
-  //reset
+  //Start Game - Insert key
+  if (event.keyCode == 45) {
+    yVelocity = 0;
+    xVelocity = 0;
+    headY = H / 2;
+    headX = W / 2;
+    tailLength = 0;
+    speed = 1.0;
+    //contextAudio.stop();
+    tummyApples.length = 0;
+    tummyGrapes.length = 0;
+    tummyLemons.length = 0;
+    tummyOranges.length = 0;
+    tummyWild.length = 0;
+    gameState("Play");
+    drawInfo();
+  }
+  // ReStart screen- Enter Key
   if (event.keyCode == 13) {
     yVelocity = 0;
     xVelocity = 0;
     headY = H / 2;
     headX = W / 2;
     tailLength = 0;
-    speed = 1.2;
+    speed = 1.0;
     //contextAudio.close();
     tummyApples.length = 0;
     tummyGrapes.length = 0;
     tummyLemons.length = 0;
     tummyOranges.length = 0;
-    drawGame();
+    tummyWild.length = 0;
+    gameState("Start");
+    drawInfo();
   }
 }
 
-drawGame();
-
-//------- Info Canvas
+//------- Info Canvas ------//
 
 const canvasInfo = document.getElementById("info");
 const ctxInfo = canvasInfo.getContext("2d");
@@ -693,6 +747,4 @@ function tummyWildColumn() {
   }
 }
 
-drawInfo();
-
-// check this for CSS styles https://codepen.io/fariati/pen/mdRpEYP
+gameState("Start");
