@@ -435,6 +435,8 @@ function drawOrange() {
   //context.fill(); // I made it a circle :)
 }
 
+
+
 function checkOrangeCollision() {
   if (orangeX == headX && orangeY == headY) {
     playFile("https://cdn.freesound.org/previews/150/150219_2712074-lq.mp3");
