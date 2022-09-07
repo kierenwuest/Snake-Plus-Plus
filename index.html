@@ -25,52 +25,6 @@
 <li>Orange dots appear atfter score 40, score between 1-5 and increase speed by 0px/s. 
 <li>Wild dots appear after score 50, score between 1-10 and decrease speed by 20px/s.</li>
 
-<h3>💀 Bugs I'm trying to work out:</h3>
-<li>Sometimes(rare/intermittent) the snake will crash into its own direction even though I tried to prevent this from happening. Control code for fast changes within the 10th sec interval will not prevent a self impact. 
-<li>Sometimes(rare/intermittent) coloured dots will randomly appear in info table. Not sure why, gussing a script order issue.</li>
-
-<h3>🎯 Roadmap:</h3>
-
-
-<li>IN PROGRESS: Teleport walls, instead of solid. 
-<li>IN PROGRESS: Create random obstacles in white shape outline (mayble like tetris blocks). Don't allow dots to spawn in them.
-<li>Create some fancy css particle effects, make styling more retro arcade.
-<li>Implement better more elegant sound behavior, https://github.com/goldfire/howler.js#documentation JS Web Audio API context is complicated.
-<li>Project some light x y lines coming from dots.
-
-<li>Some kind of gameplay tweak pre-collision for high speed play.
-<li>Create bigger dots basedon the random 1-5 score.
-<li>Create mobile touch controls and responsive resizing. 
-<li>Some kind of celebration at score 100, confetti and sound effcts or something.
-<li>Add windows gamepad support
-<li>Create some movement/shudder for the snake head to give it character.</li>
-<li>Create Bad Guy computer snake with primative AI movements</li>
-<li>Create Game Over bouns multiplier score sequence</li>
-
-
-<h3>✔️ Done ++:</h3>
-  <li><s>Create dynamic wider grid for desktop.</s></li>
-  <li><s>Make movement speed smoother, more accurate literal speed.</s></li>
-  <li><s>Make grid 10x10 pixels.</s></li>
-  <li><s>Add a visual gird.</s></li>
-  <li><s>Add new snake food (Dots).</s></li>
-  <li><s>Add speed level and separate random score range.</s></li>
-  <li><s>Make score taillength.</s></li>
-  <li><s>Add sound effects for eating dots.</s></li>
-  <li><s>Add info panel as canvas alongside.</s></li>
-  <li><s>Add snake coords.</s></li>
-  <li><s>Add collected dots to info panel.</s></li>
-  <li><s>Add gane info, bugs and features to html and style fonts.</s></li>
-  <li><s>Add score level and speed to different dots.</s></li>
-  <li><s>BUG: When I tired to implement wildcard dot feature, somehow the first dot triggers all dots on the first red dot colision. This was due to implmenting the initialiasation of the random co-ord as a variable.</s></li>
-  <li><s>Some kind of final special wild card Dot,that cycles colours, and that reduces speed or does something special or random.</s></li>
-  <li><s>BUG: Sometimes(rare/intermittent) the coloured dots spawn out of bounds(or not at all), when I've tried to constrain them in the play area.</s></li>
-  <li><s>Create a highscore element.</s></li>
-  <li><s>Made some styling more retro arcade.</s></li>
-  <li><s>Pop display the random dot value on collision.</s></li>
-  <li><s>Fade display the random dot value on collision.</s></li>
-<li><s>Create Start Game intro screen with graphic and music</s></li>
-<li><s>Review and refactor code.</s></li>
   <p>Started from a <a href="https://youtu.be/7Azlj0f9vas?t=1227">tutorial</a> all "Done ++:" modifcations are for my own learning challenges. kierenwuest at gmail.com</p>  
     <!-- partial -->
     <script src="script.js"></script>
