@@ -1,0 +1,25 @@
+{
+  // These tasks will run in order when initializing your CodeSandbox project.
+  "setupTasks": [],
+
+  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
+  "tasks": {
+    "Run": {
+      "name": "Run",
+      "command": "Run",
+      "runAtStart": true
+    },
+    "http://localhost:3000/": {
+      "name": "http://localhost:3000/",
+      "command": "http://localhost:3000/"
+    },
+    "Preview": {
+      "name": "Preview",
+      "command": "Preview"
+    },
+    "WebSocket Override": {
+      "name": "WebSocket Override",
+      "command": "WebSocket Override"
+    }
+  }
+}
