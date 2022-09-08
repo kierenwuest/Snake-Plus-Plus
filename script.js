@@ -1,7 +1,12 @@
-// Snake++ by Kieren Wuest - Version 0.20
+// Snake++ by Kieren Wuest - Version 0.20.1
 // Started from https://youtu.be/7Azlj0f9vas?t=1227
 // Features and changes from above added as Snake ++
-// Test Git
+
+// ! Alert
+// * Highlight
+// ? Question
+// TODO Something to do
+
 //------- Main Canvas ------//
 const canvas = document.getElementById("snakeGame");
 const context = canvas.getContext("2d");
@@ -20,7 +25,8 @@ window.addEventListener(
   false
 );
 
-//----------- Audio Code ------//
+//----------- Audio Code ------// Change this audio implementation to https://github.com/goldfire/howler.js#quick-start
+// or simple https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement/Audio eg https://html.spec.whatwg.org/multipage/media.html#attr-media-controls
 const contextAudio = new window.AudioContext();
 function playFile(filepath, looped) {
   // see https://jakearchibald.com/2016/sounds-fun/
@@ -89,7 +95,7 @@ const wildColours = [
   "red",
   "purple",
   "yellow",
-  "white"
+  "white",
 ];
 let index = 0;
 let alpha = 1;
@@ -119,16 +125,17 @@ function drawStartGame() {
   snakeBG.onload = function () {
     context.drawImage(snakeBG, W / 2 + 30, H / 2 - 150, 300, 300);
   };
-  snakeBG.src = "https://raw.githubusercontent.com/kierenwuest/Snake-plus-plus/main/SnakeBG3.png";
+  snakeBG.src =
+    "https://raw.githubusercontent.com/kierenwuest/Snake-plus-plus/main/SnakeBG3.png";
 
   context.fillStyle = "white";
   context.textAlign = "center";
   context.font = "bold 50px Quantico";
   context.fillText("SNAKE ++", W / 2 - 140, H / 2);
   context.font = "15px Quantico";
-  context.fillText("Press [Insert] to insert coin", W / 2 - 150, H / 1.7);
+  context.fillText("Press the [Any] key to insert coin", W / 2 - 150, H / 1.7);
   context.font = "10px Quantico";
-  context.fillText("Version 0.2", W / 2 - 150, H / 1.01);
+  context.fillText("Version 0.20.1", W / 2 - 150, H / 1.01);
 }
 
 //----- Play Game Functions ------//
@@ -186,13 +193,11 @@ function isGameOver() {
     context.textAlign = "center";
     context.font = "bold 50px Quantico";
     context.fillText("GAME OVER", W / 2, H / 2);
-    context.font = "15px Quantico";
-    context.fillText("Press [Insert] to insert coin", W / 2, H / 1.7);
+    // context.font = "15px Quantico";
+    // context.fillText("Press [Insert] to insert coin", W / 2, H / 1.7);
     setTimeout(function () {
       gameState("Start");
-    }, 1000 * 10);
-    //setTimeout(gameState("Start"), 20000);
-    //playFile('https://cdn.freesound.org/previews/583/583100_9927444-lq.mp3', true);
+    }, 1000 * 7);
     //playFile('https://cdn.freesound.org/previews/583/583100_9927444-lq.mp3');
   }
 
@@ -202,8 +207,6 @@ function isGameOver() {
 function clearScreen() {
   context.fillStyle = "black";
   context.fillRect(0, 0, canvas.width, canvas.height);
-  //context.strokeStyle = 'white';
-  //context.strokeRect(tileSize, tileSize, canvas.width - tileSize*2 ,canvas.height - tileSize*2 );
 }
 
 function displayGrid() {
@@ -242,9 +245,6 @@ function drawSnake() {
 function changeSnakePosition() {
   headX = headX + xVelocity;
   headY = headY + yVelocity;
-
-  //document.getElementById("Xcord").innerHTML = headX;
-  //document.getElementById("Ycord").innerHTML = headY;
 }
 
 function scorePopper() {
@@ -570,43 +570,64 @@ function checkWildCollision() {
 }
 
 document.body.addEventListener("keydown", keyDown);
+document.body.addEventListener("keydown", anyKey);
+
+function anyKey(){
+
+  if (gameStateValue === "Start") {
+    yVelocity = 0;
+    xVelocity = 0;
+    headY = H / 2;
+    headX = W / 2;
+    tailLength = 0;
+    speed = 1.0;
+    //contextAudio.stop();
+    tummyApples.length = 0;
+    tummyGrapes.length = 0;
+    tummyLemons.length = 0;
+    tummyOranges.length = 0;
+    tummyWild.length = 0;
+    gameState("Play");
+    drawInfo();
+  }
+}
 
 function keyDown(event) {
   //up
-  if (event.keyCode == 38) {
-    if (yVelocity == 10) return;
+  if (event.keyCode === 38) {
+    if (yVelocity === 10) return;
     yVelocity = -10;
     xVelocity = 0;
   }
 
   //down
-  if (event.keyCode == 40) {
-    if (yVelocity == -10) return;
+  if (event.keyCode === 40) {
+    if (yVelocity === -10) return;
     yVelocity = 10;
     xVelocity = 0;
   }
 
   //left
-  if (event.keyCode == 37) {
-    if (xVelocity == 10) return;
+  if (event.keyCode === 37) {
+    if (xVelocity === 10) return;
     yVelocity = 0;
     xVelocity = -10;
   }
 
   //right
-  if (event.keyCode == 39) {
-    if (xVelocity == -10) return;
+  if (event.keyCode === 39) {
+    if (xVelocity === -10) return;
     yVelocity = 0;
     xVelocity = 10;
   }
 
-  //pause
-  if (event.keyCode == 32) {
+  //pause snake - Space - will gameOver if tail > 0
+  if (event.keyCode === 32) {
     yVelocity = 0;
     xVelocity = 0;
   }
   //Start Game - Insert key
-  if (event.keyCode == 45) {
+  if (event.keyCode === 45 || event.keyCode === 96) {
     yVelocity = 0;
     xVelocity = 0;
     headY = H / 2;
@@ -623,7 +644,7 @@ function keyDown(event) {
     drawInfo();
   }
   // ReStart screen- Enter Key
-  if (event.keyCode == 13) {
+  if (event.keyCode === 13) {
     yVelocity = 0;
     xVelocity = 0;
     headY = H / 2;
